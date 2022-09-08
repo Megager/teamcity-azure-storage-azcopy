@@ -30,9 +30,9 @@ class AzureStorageType(registry: ArtifactStorageTypeRegistry,
         registry.registerStorageType(this)
     }
 
-    override fun getName() = "Azure Storage"
+    override fun getName() = "Azure Storage AzCopy"
 
-    override fun getDescription() = "Provides Azure storage support for TeamCity artifacts"
+    override fun getDescription() = "Provides Azure storage support for TeamCity artifacts using AzCopy"
 
     override fun getType() = AzureConstants.STORAGE_TYPE
 

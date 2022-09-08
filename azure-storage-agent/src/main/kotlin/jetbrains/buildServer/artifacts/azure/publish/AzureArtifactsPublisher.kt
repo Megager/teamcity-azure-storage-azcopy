@@ -27,6 +27,7 @@ import jetbrains.buildServer.serverSide.artifacts.azure.AzureConstants
 import jetbrains.buildServer.serverSide.artifacts.azure.AzureConstants.PATH_PREFIX_ATTR
 import jetbrains.buildServer.serverSide.artifacts.azure.AzureConstants.PATH_PREFIX_SYSTEM_PROPERTY
 import jetbrains.buildServer.serverSide.artifacts.azure.AzureUtils
+import jetbrains.buildServer.serverSide.artifacts.azure.AzureUtils.runCommand
 import jetbrains.buildServer.util.EventDispatcher
 import java.io.File
 import java.io.FileInputStream
@@ -71,19 +72,16 @@ class AzureArtifactsPublisher(dispatcher: EventDispatcher<AgentLifeCycleListener
                     container.createIfNotExists()
                 }
 
+                val sas = container.generateSharedAccessSignature(AzureUtils.createFullSharedAccessPolicy(), null)
                 filesToPublish.forEach { (file, path) ->
                     val filePath = AzureUtils.appendPathPrefix(path, file.name)
                     val blobName = AzureUtils.appendPathPrefix(pathPrefix, filePath)
-                    val blob = container.getBlockBlobReference(blobName)
-                    blob.properties.contentType = AzureUtils.getContentType(file)
-                    blob.streamWriteSizeInBytes = AzureUtils.getWriteBufferSize()
+                    val destUrl = AzureUtils.getPathForCopy(blobName, containerName, parameters, sas)
+
+                    AzureUtils.runCopy(filePath, destUrl);
 
                     FileInputStream(file).use {
                         val length = file.length()
-                        blob.upload(it, length, null, BlobRequestOptions().apply {
-                            this.concurrentRequestCount = AzureUtils.getWriteConcurrentRequestCount()
-                            this.timeoutIntervalInMs = 30_000
-                        }, null)
                         val artifact = ArtifactDataInstance.create(filePath, length)
                         publishedArtifacts.add(artifact)
                     }

@@ -21,12 +21,17 @@ import com.microsoft.azure.storage.StorageCredentialsAccountAndKey
 import com.microsoft.azure.storage.StorageException
 import com.microsoft.azure.storage.blob.CloudBlobClient
 import com.microsoft.azure.storage.blob.CloudBlockBlob
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy
 import jetbrains.buildServer.serverSide.TeamCityProperties
 import jetbrains.buildServer.util.FileUtil
 import java.io.File
 import java.lang.reflect.Method
 import java.net.URLConnection
 import java.net.UnknownHostException
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.NoSuchElementException
 
 object AzureUtils {
     /**
@@ -81,6 +86,17 @@ object AzureUtils {
                 ?: throw IllegalArgumentException("Path should not be empty")
         val container = client.getContainerReference(containerName)
         return container.getBlockBlobReference(blobPath)
+    }
+
+    fun createFullSharedAccessPolicy(): SharedAccessBlobPolicy {
+        val cal = GregorianCalendar(TimeZone.getTimeZone("UTC"))
+        cal.time = Date()
+        cal.add(Calendar.SECOND, 1000)
+        val policy = SharedAccessBlobPolicy()
+        policy.permissions = EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
+            SharedAccessBlobPermissions.ADD, SharedAccessBlobPermissions.CREATE)
+        policy.sharedAccessExpiryTime = cal.time
+        return policy
     }
 
     fun getContainerAndPath(pathPrefix: String): Pair<String, String>? {
@@ -157,6 +173,23 @@ object AzureUtils {
         } catch (ignored: Exception) {
         }
         return null
+    }
+
+    fun getPathForCopy(name: String, containerName: String, parameters: Map<String, String>, sas: String) : String {
+        val accountName = parameters[AzureConstants.PARAM_ACCOUNT_NAME]
+        return "https://${accountName}.blob.core.windows.net/${containerName}/${name}?${sas}"
+    }
+
+    fun runCopy(from: String, to: String) {
+        "azcopy cp ${from} ${to}".runCommand()
+    }
+
+    fun String.runCommand() {
+        ProcessBuilder(*split(" ").toTypedArray())
+            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+            .redirectError(ProcessBuilder.Redirect.INHERIT)
+            .start()
+            .waitFor(60, TimeUnit.MINUTES)
     }
 
     private const val FORWARD_SLASH = '/'

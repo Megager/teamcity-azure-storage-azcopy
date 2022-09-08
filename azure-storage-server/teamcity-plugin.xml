@@ -18,7 +18,7 @@
 <teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:noNamespaceSchemaLocation="urn:shemas-jetbrains-com:teamcity-plugin-v1-xml">
     <info>
-        <name>azure-storage</name>
+        <name>azure-storage-azcopy</name>
         <display-name>Azure Artifact Storage</display-name>
         <version>@Plugin_Version@</version>
         <description>Allows storing build artifacts in an Azure storage account</description>

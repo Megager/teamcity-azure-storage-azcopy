@@ -19,7 +19,7 @@ package jetbrains.buildServer.serverSide.artifacts.azure
 import jetbrains.buildServer.agent.Constants
 
 object AzureConstants {
-    const val STORAGE_TYPE = "azure-storage"
+    const val STORAGE_TYPE = "azure-storage-azcopy"
     const val SETTINGS_PATH = "azure_storage_settings"
     const val PARAM_ACCOUNT_NAME = "account-name"
     const val PARAM_ACCOUNT_KEY = Constants.SECURE_PROPERTY_PREFIX + "account-key"
