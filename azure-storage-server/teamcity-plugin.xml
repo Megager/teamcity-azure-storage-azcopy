@@ -19,13 +19,11 @@
                  xsi:noNamespaceSchemaLocation="urn:shemas-jetbrains-com:teamcity-plugin-v1-xml">
     <info>
         <name>azure-storage-azcopy</name>
-        <display-name>Azure Artifact Storage</display-name>
-        <version>@Plugin_Version@</version>
-        <description>Allows storing build artifacts in an Azure storage account</description>
-        <download-url>https://github.com/JetBrains/teamcity-azure-storage</download-url>
-        <vendor>
-            <name>JetBrains</name>
-            <url>http://www.jetbrains.com/</url>
+        <display-name>Azure Artifact Storage with az copy</display-name>
+        <version>0.1</version>
+        <description>Allows storing build artifacts in an Azure storage account using azcopy uploading</description>
+       <vendor>
+            <name>DMZA</name>
         </vendor>
     </info>
     <requirements min-build="46654" />

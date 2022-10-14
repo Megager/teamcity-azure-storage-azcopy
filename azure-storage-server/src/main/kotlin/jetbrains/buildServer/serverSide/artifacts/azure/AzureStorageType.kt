@@ -59,6 +59,14 @@ class AzureStorageType(registry: ArtifactStorageTypeRegistry,
                 }
             }
 
+            AzureConstants.PARAM_ACCOUNT_SAS.apply {
+                if (it[this].isNullOrEmpty()) {
+                    invalidProperties.add(InvalidProperty(this, EMPTY_VALUE))
+                } else {
+                    parameters[this] = it[this]!!
+                }
+            }
+
             if (parameters.size == 2) {
                 try {
                     AzureUtils.getBlobClient(parameters).downloadServiceProperties()

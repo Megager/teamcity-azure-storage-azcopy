@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-rootProject.name='teamcity-azure-storage'
+rootProject.name='teamcity-azure-storage-azcopy'
 
 include 'azure-storage-agent', 'azure-storage-common', 'azure-storage-server'

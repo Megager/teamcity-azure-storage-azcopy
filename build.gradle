@@ -21,7 +21,7 @@ plugins {
 ext {
     def correctVersion = project.hasProperty('versionNumber') && property('versionNumber') ==~ /\d+\.\d+\.\d+.*/
     versionNumber = correctVersion ? property('versionNumber') : 'SNAPSHOT-' + new Date().format('yyyyMMddHHmmss')
-    projectIds = ['group': 'teamcity-azure-storage', 'version': versionNumber, 'artifact': 'azure-artifact-storage']
+    projectIds = ['group': 'teamcity-azure-storage-azcopy', 'version': versionNumber, 'artifact': 'azure-artifact-storage-azcopy']
     teamcityVersion = project.hasProperty('teamcityVersion') ? property('teamcityVersion') : '2019.2-SNAPSHOT'
 }
 

@@ -72,11 +72,11 @@ class AzureArtifactsPublisher(dispatcher: EventDispatcher<AgentLifeCycleListener
                     container.createIfNotExists()
                 }
 
-                val sas = container.generateSharedAccessSignature(AzureUtils.createFullSharedAccessPolicy(), null)
+                val sas = parameters[AzureConstants.PARAM_ACCOUNT_SAS]?.trim()
                 filesToPublish.forEach { (file, path) ->
                     val filePath = AzureUtils.appendPathPrefix(path, file.name)
                     val blobName = AzureUtils.appendPathPrefix(pathPrefix, filePath)
-                    val destUrl = AzureUtils.getPathForCopy(blobName, containerName, parameters, sas)
+                    val destUrl = AzureUtils.getPathForCopy(file.name, containerName, parameters, sas)
 
                     AzureUtils.runCopy(filePath, destUrl);
 

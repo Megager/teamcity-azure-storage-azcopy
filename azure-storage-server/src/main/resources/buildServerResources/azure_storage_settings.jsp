@@ -48,6 +48,16 @@
             <span class="smallNote">Specify the key to access storage account.</span>
         </td>
     </tr>
+    <tr>
+            <th class="noBorder"><label for="${params.accountSas}">Account sas: <l:star/></label></th>
+            <td>
+                <div class="posRel">
+                    <props:passwordProperty name="${params.accountSas}" className="longField"/>
+                </div>
+                <span class="error" id="error_${params.accountSas}"></span>
+                <span class="smallNote">Specify the SAS to access storage account.</span>
+            </td>
+        </tr>
 </l:settingsGroup>
 
 <l:settingsGroup title="Storage Parameters">

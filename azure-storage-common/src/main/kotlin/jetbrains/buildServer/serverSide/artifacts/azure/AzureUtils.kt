@@ -175,7 +175,7 @@ object AzureUtils {
         return null
     }
 
-    fun getPathForCopy(name: String, containerName: String, parameters: Map<String, String>, sas: String) : String {
+    fun getPathForCopy(name: String, containerName: String, parameters: Map<String, String>, sas: String?) : String {
         val accountName = parameters[AzureConstants.PARAM_ACCOUNT_NAME]
         return "https://${accountName}.blob.core.windows.net/${containerName}/${name}?${sas}"
     }
@@ -186,8 +186,6 @@ object AzureUtils {
 
     fun String.runCommand() {
         ProcessBuilder(*split(" ").toTypedArray())
-            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-            .redirectError(ProcessBuilder.Redirect.INHERIT)
             .start()
             .waitFor(60, TimeUnit.MINUTES)
     }

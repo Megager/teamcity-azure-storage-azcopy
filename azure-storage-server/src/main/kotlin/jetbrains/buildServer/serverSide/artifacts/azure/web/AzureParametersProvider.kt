@@ -24,6 +24,8 @@ class AzureParametersProvider {
         get() = AzureConstants.PARAM_ACCOUNT_NAME
     val accountKey: String
         get() = AzureConstants.PARAM_ACCOUNT_KEY
+    val accountSas: String
+        get() = AzureConstants.PARAM_ACCOUNT_SAS
     val containerName: String
         get() = AzureConstants.PARAM_CONTAINER_NAME
     val containersPath: String
